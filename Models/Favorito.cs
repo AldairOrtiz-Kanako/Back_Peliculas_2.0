@@ -17,7 +17,7 @@ namespace MoviesSeries.Models
         public int SerieID { get; set; }
 
         [ForeignKey("UsuarioID")]
-        public required User User { get; set; }
+        public required Usuario Usuario { get; set; }
 
         [ForeignKey("MovieID")]
         public required Movie Movie { get; set; }

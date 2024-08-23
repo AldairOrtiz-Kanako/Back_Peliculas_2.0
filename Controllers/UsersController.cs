@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
 using MoviesSeries.Models;
 namespace MoviesSeries.Controllers
@@ -15,20 +17,27 @@ namespace MoviesSeries.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(User user)
-        {
-            user.RegistrationDate = DateTime.UtcNow;
+      public async Task<int> InsertarUsuario(Usuario usuario)
+{
+    var nombre = new SqlParameter("@Nombre", usuario.Nombre);
+    var apellido = new SqlParameter("@Apellido", usuario.Apellido);
+    var nombreUsuario = new SqlParameter("@NombreUsuario", usuario.NombreUsuario);
+    var correo = new SqlParameter("@Correo", usuario.Correo);
+    var contrasena = new SqlParameter("@Contrasena", usuario.Contrasena);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+    var result = await _context.Database.ExecuteSqlRawAsync(
+        "EXEC CrearUsuarios @Nombre, @Apellido, @NombreUsuario, @Correo, @Contrasena",
+        nombre, apellido, nombreUsuario, correo, contrasena);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-        }
+    // Nota: Este SP no devuelve el ID del usuario insertado.
+    // Si necesitas el ID, deberás modificar el SP para que lo devuelva.
+    return result;
+}
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Usuario>> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Usuarios.FindAsync(id);
 
             if (user == null)
             {

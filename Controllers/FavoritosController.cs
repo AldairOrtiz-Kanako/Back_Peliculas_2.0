@@ -21,7 +21,7 @@ namespace MoviesSeries.Controllers
         public async Task<ActionResult<IEnumerable<Favorito>>> GetFavoritos()
         {
             return await _context.Favoritos
-                .Include(f => f.User)
+                .Include(f => f.Usuario )
                 .Include(f => f.Movie)
                 .ToListAsync();
         }
@@ -31,7 +31,7 @@ namespace MoviesSeries.Controllers
         public async Task<ActionResult<Favorito>> GetFavorito(int id)
         {
             var favorito = await _context.Favoritos
-                .Include(f => f.User)
+                .Include(f => f.Usuario)
                 .Include(f => f.Movie)
                 .FirstOrDefaultAsync(f => f.Id == id);
 
