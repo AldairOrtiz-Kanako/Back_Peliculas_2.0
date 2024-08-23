@@ -46,8 +46,7 @@
 //Configurando para el contexto
 using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
-
-
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,28 +54,45 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("MoviesSeriesDb"));
 
-// Agregar servicios a la contenedor.
+// Configurar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5025/swagger/index.html", "http://localhost:4200") // Reemplaza con la URL de tu app Angular
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+// Agregar servicios al contenedor
 builder.Services.AddControllers();
 
-// swagger 
+// Agregar Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movies and Series API", Version = "v1" });
+});
 
 var app = builder.Build();
 
-// Configurar el pipeline de HTTP.
+// Configurar el pipeline de HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movies and Series API v1"));
 }
 
 app.UseHttpsRedirection();
 
+// Usar CORS
+app.UseCors("AllowAngularApp");
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseSwagger();
-app.UseSwaggerUI(c=>c.SwaggerEndpoint("/swagger/v1/swagger.json","Ejemplo api "));
 
 app.Run();
