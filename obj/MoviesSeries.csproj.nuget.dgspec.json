@@ -1,20 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Emmanuel\\Desktop\\MoviesSeries\\MoviesSeries.csproj": {}
+    "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Emmanuel\\Desktop\\MoviesSeries\\MoviesSeries.csproj": {
+    "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Emmanuel\\Desktop\\MoviesSeries\\MoviesSeries.csproj",
+        "projectUniqueName": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj",
         "projectName": "MoviesSeries",
-        "projectPath": "c:\\Users\\Emmanuel\\Desktop\\MoviesSeries\\MoviesSeries.csproj",
-        "packagesPath": "C:\\Users\\Emmanuel\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Emmanuel\\Desktop\\MoviesSeries\\obj\\",
+        "projectPath": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj",
+        "packagesPath": "C:\\Users\\darka\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Emmanuel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\darka\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

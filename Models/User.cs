@@ -9,7 +9,7 @@ namespace MoviesSeries.Models
         public required string Apellido { get; set; }
         public required string NombreUsuario { get; set; }
         public required string Correo { get; set; }
-        public required string Contraseña { get; set; }
+        public required string Contrasena { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
     }
 

@@ -60,7 +60,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngularApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5025/swagger/index.html", "http://localhost:4200") // Reemplaza con la URL de tu app Angular
+            builder.WithOrigins("http://localhost:4200") // Reemplaza con la URL de tu app Angular
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
