@@ -50,9 +50,11 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar el contexto de la base de datos
+// Configurar la conexión a la base de datos
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("MoviesSeriesDb"));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HubPeliculas"));
+});
 
 // Configurar CORS
 builder.Services.AddCors(options =>
@@ -77,6 +79,23 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+// Verificar la conexión a la base de datos
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.OpenConnection();
+        context.Database.CloseConnection();
+        Console.WriteLine("Conexión a la base de datos establecida correctamente.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error al conectar con la base de datos: {ex.Message}");
+    }
+}
 
 // Configurar el pipeline de HTTP
 if (app.Environment.IsDevelopment())
