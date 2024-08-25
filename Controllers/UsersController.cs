@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
 using MoviesSeries.Models;
+using MoviesSeries.Models.Dtos;
 namespace MoviesSeries.Controllers
 {
     [ApiController]
@@ -35,16 +36,20 @@ namespace MoviesSeries.Controllers
 }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUser(int id)
-        {
-            var user = await _context.Usuarios.FindAsync(id);
+public async Task<ActionResult<UsuarioDto>> GetUser(int id)
+{
+    var result = await _context.Database
+        .SqlQuery<UsuarioDto>($"EXEC ObtenerUsuarioPorID {id}")
+        .ToListAsync();
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+    var usuario = result.FirstOrDefault();
 
-            return user;
-        }
+    if (usuario == null)
+    {
+        return NotFound();
+    }
+
+    return usuario;
+}
     }
 }
