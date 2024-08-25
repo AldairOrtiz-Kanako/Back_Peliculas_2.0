@@ -10,7 +10,6 @@ namespace MoviesSeries.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genero> Generos { get; set; }
-        public DbSet<Favorito> Favoritos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

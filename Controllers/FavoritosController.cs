@@ -2,86 +2,54 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
 using MoviesSeries.Models;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace MoviesSeries.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FavoritoController : ControllerBase
+    public class FavoritosController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public FavoritoController(AppDbContext context)
+        public FavoritosController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Favorito
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Favorito>>> GetFavoritos()
+        [HttpPost("agregar")]
+        public async Task<IActionResult> AgregarAFavoritos([FromBody] AgregarFavoritoParams parametros)
         {
-            return await _context.Favoritos
-                .Include(f => f.Usuario )
-                .Include(f => f.Movie)
-                .ToListAsync();
-        }
-
-        // GET: api/Favorito/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Favorito>> GetFavorito(int id)
-        {
-            var favorito = await _context.Favoritos
-                .Include(f => f.Usuario)
-                .Include(f => f.Movie)
-                .FirstOrDefaultAsync(f => f.Id == id);
-
-            if (favorito == null)
+            try
             {
-                return NotFound();
+                var parameters = new[]
+                {
+                    new SqlParameter("@UsuarioID", SqlDbType.Int) { Value = parametros.UsuarioID },
+                    new SqlParameter("@PeliculasID", SqlDbType.Int) { Value = parametros.PeliculasID.HasValue ? (object)parametros.PeliculasID.Value : DBNull.Value },
+                    new SqlParameter("@SeriesID", SqlDbType.Int) { Value = parametros.SeriesID.HasValue ? (object)parametros.SeriesID.Value : DBNull.Value }
+                };
+
+                var sql = "EXEC AgregarAFavoritos @UsuarioID, @PeliculasID, @SeriesID";
+                
+                // Log de los parámetros
+                Console.WriteLine($"Executing SP with parameters: UsuarioID={parametros.UsuarioID}, PeliculasID={parametros.PeliculasID}, SeriesID={parametros.SeriesID}");
+
+                await _context.Database.ExecuteSqlRawAsync(sql, parameters);
+
+                return Ok("Agregado a favoritos exitosamente.");
             }
-
-            return favorito;
-        }
-
-        // POST: api/Favorito
-        [HttpPost]
-        public async Task<ActionResult<Favorito>> PostFavorito(Favorito favorito)
-        {
-            _context.Favoritos.Add(favorito);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetFavorito), new { id = favorito.Id }, favorito);
-        }
-
-        // DELETE: api/Favorito/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFavorito(int id)
-        {
-            var favorito = await _context.Favoritos.FindAsync(id);
-            if (favorito == null)
+            catch (SqlException ex)
             {
-                return NotFound();
+                // Log detallado del error
+                Console.WriteLine($"SqlException: {ex.Message}\nError Number: {ex.Number}\nProcedure: {ex.Procedure}");
+                return BadRequest($"Error en el procedimiento almacenado: {ex.Message}");
             }
-
-            _context.Favoritos.Remove(favorito);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        // GET: api/Favorito/Usuario/5
-        [HttpGet("Usuario/{usuarioId}")]
-        public async Task<ActionResult<IEnumerable<Favorito>>> GetFavoritosByUsuario(int usuarioId)
-        {
-            return await _context.Favoritos
-                .Where(f => f.UsuarioID == usuarioId)
-                .Include(f => f.Movie)
-                .ToListAsync();
-        }
-
-        private bool FavoritoExists(int id)
-        {
-            return _context.Favoritos.Any(e => e.Id == id);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                return StatusCode(500, $"Ocurrió un error al agregar a favoritos: {ex.Message}");
+            }
         }
     }
 }
