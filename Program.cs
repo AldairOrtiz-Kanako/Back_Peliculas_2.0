@@ -47,6 +47,10 @@
 using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using MoviesSeries.Custom;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +58,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("HubPeliculas"));
+});
+
+//Utilizar utilidades
+builder.Services.AddSingleton<Utilidades>();
+
+//Configurar autentificación con JWT
+builder.Services.AddAuthentication(config => {
+    config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(config => {
+    config.RequireHttpsMetadata = false;
+    config.SaveToken = true;
+    config.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
+    };
 });
 
 // Configurar CORS
@@ -112,6 +138,9 @@ app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
+

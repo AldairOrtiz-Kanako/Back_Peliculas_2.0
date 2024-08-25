@@ -415,3 +415,4 @@ C:\Users\darka\Documents\GitHub\Back_Peliculas_2.0\obj\Debug\net8.0\refint\Movie
 C:\Users\darka\Documents\GitHub\Back_Peliculas_2.0\obj\Debug\net8.0\MoviesSeries.pdb
 C:\Users\darka\Documents\GitHub\Back_Peliculas_2.0\obj\Debug\net8.0\MoviesSeries.genruntimeconfig.cache
 C:\Users\darka\Documents\GitHub\Back_Peliculas_2.0\obj\Debug\net8.0\ref\MoviesSeries.dll
+C:\Users\darka\Documents\GitHub\Back_Peliculas_2.0\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
