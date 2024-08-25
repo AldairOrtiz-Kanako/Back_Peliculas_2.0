@@ -8,7 +8,6 @@ namespace MoviesSeries.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Serie> Series { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genero> Generos { get; set; }
         public DbSet<Favorito> Favoritos { get; set; }
@@ -19,7 +18,7 @@ namespace MoviesSeries.Data
 
             // Excluir explícitamente Movie del modelo de EF Core
             modelBuilder.Ignore<Movie>();
-
+            modelBuilder.Ignore<Serie>();
             // Configuraciones adicionales para otras entidades si es necesario
         }
     }

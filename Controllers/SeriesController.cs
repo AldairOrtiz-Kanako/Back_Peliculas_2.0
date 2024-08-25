@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesSeries.Data;
@@ -17,29 +18,68 @@ namespace MoviesSeries.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Serie>>> GetSeries()
+        public async Task<ActionResult<IEnumerable<Serie>>> GetCatalogoCompleto()
         {
-            return await _context.Series
-                .Include(s => s.Genero)
-                .Include(s => s.Director)
-                .ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Serie>> GetSerie(int id)
-        {
-            var serie = await _context.Series
-                .Include(s => s.Genero)
-                .Include(s => s.Director)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (serie == null)
+            try
             {
-                return NotFound();
-            }
+                var catalogoItems = new List<Serie>();
 
-            return serie;
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = "ObtenerSeries";
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (var result = await command.ExecuteReaderAsync())
+                        {
+                            while (await result.ReadAsync())
+                            {
+                                var item = new Serie
+
+                                {
+                                    Titulo = result.GetString(result.GetOrdinal("Titulo")),
+                                    Temporadas = result.IsDBNull(result.GetOrdinal("Temporadas")) ? null :
+                                    int.TryParse(result.GetValue(result.GetOrdinal("Temporadas")).ToString(), out int temp) ? (int?)temp : null,
+                                    Episodios = result.IsDBNull(result.GetOrdinal("Episodios")) ? null :
+                                    int.TryParse(result.GetValue(result.GetOrdinal("Episodios")).ToString(), out int ep) ? (int?)ep : null,
+                                    FechaEstreno = result.GetDateTime(result.GetOrdinal("FechaEstreno")),
+                                    Sinopsis = result.GetString(result.GetOrdinal("Sinopsis")),
+                                    Genero = result.GetString(result.GetOrdinal("Genero")),
+                                    Director = result.GetString(result.GetOrdinal("Director")),
+                                    Poster = result.GetString(result.GetOrdinal("Poster")),
+                                    Trailer = result.GetString(result.GetOrdinal("Trailer")),
+                                };
+
+                                catalogoItems.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                return catalogoItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex}");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
         }
 
+        private int? ParseDuration(object value)
+        {
+            if (value == null || value == DBNull.Value)
+                return null;
+
+            if (int.TryParse(value.ToString(), out int duration))
+                return duration;
+
+            // Si no se puede convertir a int, puedes manejar el error aquí
+            // Por ejemplo, podrías registrar un warning y retornar null
+            Console.WriteLine($"Warning: No se pudo convertir la duración '{value}' a un número entero.");
+            return null;
+        }
     }
 }

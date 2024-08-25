@@ -1,24 +1,16 @@
-
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace MoviesSeries.Models
 {
     public class Serie
     {
-        public int Id { get; set; }
-        public required string Titulo { get; set; }
-        public required int Temporada { get; set; }
-        public required int Episodios { get; set; }
-        public DateTime? ReleaseDate { get; set; }
-        public required string Descripcion { get; set; }
-        public required string Image { get; set; }
 
-        [ForeignKey("Genero")]
-        public int GeneroId { get; set; }
-        public required Genero Genero { get; set; }
-
-        [ForeignKey("Director")]
-        public int DirectorId { get; set; }
-        public required Director Director { get; set; }
+        public required string Titulo { get; set; } = string.Empty;
+        public required int? Temporadas { get; set; }
+        public required int? Episodios { get; set; }
+        public required DateTime FechaEstreno { get; set; }
+        public required string Sinopsis { get; set; } = string.Empty;
+        public required string Genero { get; set; } = string.Empty;
+        public required string Director { get; set; } = string.Empty;
+        public required string Poster { get; set; } = string.Empty;
+        public required string Trailer { get; set; } = string.Empty;
     }
 }
