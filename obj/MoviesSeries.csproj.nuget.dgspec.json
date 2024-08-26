@@ -1,33 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj": {}
+    "C:\\Users\\julie\\Back_Peliculas_2.0\\MoviesSeries.csproj": {}
   },
   "projects": {
-    "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj": {
+    "C:\\Users\\julie\\Back_Peliculas_2.0\\MoviesSeries.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj",
+        "projectUniqueName": "C:\\Users\\julie\\Back_Peliculas_2.0\\MoviesSeries.csproj",
         "projectName": "MoviesSeries",
-        "projectPath": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\MoviesSeries.csproj",
-        "packagesPath": "C:\\Users\\darka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\darka\\Documents\\GitHub\\Back_Peliculas_2.0\\obj\\",
+        "projectPath": "C:\\Users\\julie\\Back_Peliculas_2.0\\MoviesSeries.csproj",
+        "packagesPath": "C:\\Users\\julie\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\julie\\Back_Peliculas_2.0\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\darka\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\julie\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
